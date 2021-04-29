@@ -1,11 +1,15 @@
 package dev.ludovic.netlib.website;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.MediaType;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,13 +49,24 @@ public class ReleaseController {
     value = "/releases/assets/{asset_id}",
     produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @CrossOrigin(origins = "*")
-  public byte[] releasesAssetsContent(@PathVariable int asset_id) {
+  public ResponseEntity<Void> releasesDownloadAsset(@PathVariable int asset_id) {
     var asset = new ReleaseAsset.Finder()
-                    .restTemplate(restTemplate)
-                    .findById(asset_id);
+                      .restTemplate(restTemplate)
+                      .findById(asset_id);
 
-    return restTemplate.execute(asset.getBrowser_download_url(), HttpMethod.GET, null, response -> {
-      return StreamUtils.copyToByteArray(response.getBody());
-    });
+    return ResponseEntity.status(HttpStatus.FOUND).location(
+            URI.create(asset.getBrowser_download_url().replaceFirst("^http(s)?://github.com", "")))
+              .build();
+  }
+
+  @GetMapping(
+    value = "/luhenry/netlib/releases/download/{release}/{asset}",
+    produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+  @CrossOrigin(origins = "*")
+  public byte[] releasesDownloadAsset(@PathVariable String release, @PathVariable String asset) {
+    return restTemplate.execute("https://github.com/luhenry/netlib/releases/download/{release}/{asset}",
+                                HttpMethod.GET, null,
+                                response -> { return StreamUtils.copyToByteArray(response.getBody()); },
+                                Map.of("release", release, "asset", asset));
   }
 }
