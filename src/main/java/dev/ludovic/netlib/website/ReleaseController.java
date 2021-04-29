@@ -29,7 +29,7 @@ public class ReleaseController {
     this.restTemplate = restTemplateBuilder.build();
   }
 
-  @GetMapping("/releases")
+  @GetMapping("/luhenry/netlib/releases")
   @CrossOrigin(origins = "*")
   public Iterable<Release> releases() {
     return new Release.Finder()
@@ -37,7 +37,7 @@ public class ReleaseController {
                 .all();
   }
 
-  @GetMapping("/releases/assets/{asset_id}")
+  @GetMapping("/luhenry/netlib/releases/assets/{asset_id}")
   @CrossOrigin(origins = "*")
   public ReleaseAsset releasesAssets(@PathVariable int asset_id) {
     return new ReleaseAsset.Finder()
@@ -46,7 +46,7 @@ public class ReleaseController {
   }
 
   @GetMapping(
-    value = "/releases/assets/{asset_id}",
+    value = "/luhenry/netlib/releases/assets/{asset_id}",
     produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @CrossOrigin(origins = "*")
   public ResponseEntity<Void> releasesDownloadAsset(@PathVariable int asset_id) {
