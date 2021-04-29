@@ -3,9 +3,11 @@ package dev.ludovic.netlib.website;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,10 +65,15 @@ public class ReleaseController {
     value = "/luhenry/netlib/releases/download/{release}/{asset}",
     produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @CrossOrigin(origins = "*")
-  public byte[] releasesDownloadAsset(@PathVariable String release, @PathVariable String asset) {
-    return restTemplate.execute("https://github.com/luhenry/netlib/releases/download/{release}/{asset}",
-                                HttpMethod.GET, null,
-                                response -> { return StreamUtils.copyToByteArray(response.getBody()); },
-                                Map.of("release", release, "asset", asset));
+  public ResponseEntity<byte[]> releasesDownloadAsset(@PathVariable String release, @PathVariable String asset) {
+    var body = restTemplate.execute("https://github.com/luhenry/netlib/releases/download/{release}/{asset}",
+                                    HttpMethod.GET, null,
+                                    response -> { return StreamUtils.copyToByteArray(response.getBody()); },
+                                    Map.of("release", release, "asset", asset));
+
+    return ResponseEntity
+            .ok()
+            .cacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+            .body(body);
   }
 }
