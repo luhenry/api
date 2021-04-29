@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/website-0-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -jar target/api-0-SNAPSHOT.jar

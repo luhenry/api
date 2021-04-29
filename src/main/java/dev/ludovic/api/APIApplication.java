@@ -1,12 +1,12 @@
-package dev.ludovic.netlib.website;
+package dev.ludovic.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebsiteApplication {
+public class APIApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(WebsiteApplication.class, args);
+    SpringApplication.run(APIApplication.class, args);
   }
 }

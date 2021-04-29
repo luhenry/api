@@ -1,5 +1,5 @@
 
-package dev.ludovic.netlib.website;
+package dev.ludovic.api;
 
 import java.util.Map;
 
@@ -28,10 +28,11 @@ public final class ReleaseAsset {
     return content_type;
   }
 
-  public static class Finder extends dev.ludovic.netlib.website.Finder<Finder> {
+  public static class Finder extends dev.ludovic.api.Finder<Finder> {
 
-    public ReleaseAsset findById(int id) {
-      return restTemplate.getForObject("https://api.github.com/repos/luhenry/netlib/releases/assets/{id}", ReleaseAsset.class, Map.of("id", id));
+    public ReleaseAsset findById(String owner, String repo, int id) {
+      return restTemplate.getForObject("https://api.github.com/repos/{owner}/{repo}/releases/assets/{id}",
+                ReleaseAsset.class, Map.of("owner", owner, "repo", repo, "id", id));
     }
   }
 }

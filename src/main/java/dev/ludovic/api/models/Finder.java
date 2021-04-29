@@ -1,5 +1,5 @@
 
-package dev.ludovic.netlib.website;
+package dev.ludovic.api;
 
 import org.springframework.web.client.RestTemplate;
 

@@ -8,11 +8,10 @@
 		<version>2.4.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>dev.ludovic.netlib</groupId>
-	<artifactId>website</artifactId>
+	<groupId>dev.ludovic.api</groupId>
+	<artifactId>api</artifactId>
 	<version>0-SNAPSHOT</version>
-	<name>website</name>
-	<description>Netlib Webiste</description>
+	<description>api.ludovic.dev</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

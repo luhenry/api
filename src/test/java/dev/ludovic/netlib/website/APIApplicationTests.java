@@ -1,10 +1,10 @@
-package dev.ludovic.netlib.website;
+package dev.ludovic.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WebsiteApplicationTests {
+class APIApplicationTests {
 
 	@Test
 	void contextLoads() {

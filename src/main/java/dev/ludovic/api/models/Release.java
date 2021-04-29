@@ -1,5 +1,5 @@
 
-package dev.ludovic.netlib.website;
+package dev.ludovic.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,13 +21,14 @@ public final class Release {
     return Arrays.asList(assets);
   }
 
-  public static class Finder extends dev.ludovic.netlib.website.Finder<Finder> {
+  public static class Finder extends dev.ludovic.api.Finder<Finder> {
 
-    public Iterable<Release> all() {
+    public Iterable<Release> all(String owner, String repo) {
       assert restTemplate != null;
       var releases = new ArrayList<Release>();
       for (int page = 1;; page++) {
-        var result = restTemplate.getForObject("https://api.github.com/repos/luhenry/netlib/releases?page={page}&per_page=10", Release[].class, Map.of("page", page));
+        var result = restTemplate.getForObject("https://api.github.com/repos/{owner}/{repo}/releases?page={page}&per_page=10",
+                        Release[].class, Map.of("owner", owner, "repo", repo, "page", page));
         if (result.length == 0) {
           break;
         }
